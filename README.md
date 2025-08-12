@@ -9,6 +9,7 @@ This document describes the CTV Home Capture Schema v1.0.0, which defines the st
 - **Update frequency:** Daily updates, with an SLA of 99.5%, minimum 90% guarantee.
 - **Delivery method:** Data will be delivered via S3 in JSONL format.
 - **Tentative delivery date:** First real draft expected by last week of August 2025.
+- **OpenAPI YAML Spec:** [CTV Home Capture Schema v1.0.0](https://github.com/Fabric-Data-IT/CTV-Home-Capture/blob/main/schema.yaml)
 
 ## Field Reference
 | Field                                  | Description                                                   | Type                | Nullable |
@@ -49,3 +50,17 @@ This document describes the CTV Home Capture Schema v1.0.0, which defines the st
 | `rows[].items[].cast[].person_name`    | Name of the person.                                           | string              | Yes      |
 | `rows[].items[].cast[].role`           | Role (actor, director, voice, etc.).                          | string              | Yes      |
 | `rows[].items[].cast[].character_name` | Character name (if applicable).                               | string              | Yes      |
+
+
+## Illustrative Demo Note
+The following example is for illustration purposes only and is not final.
+It may change due to:
+
+- Platform UI changes
+- PoC validation results
+- Data availability from scraping/crawling
+
+**[Demo.jsonl](https://github.com/Fabric-Data-IT/CTV-Home-Capture/blob/main/demo.jsonl)**
+```
+{"capture_id": "1b2d3f4a-1234-5678-90ab-abcdef123456", "platform": "samsung_tizen", "system_version": "Tizen 7.0", "device_model": "QN90B", "locale": "en-US", "region": "US", "collected_at_utc": "2025-08-25T14:10:05Z", "crawler_version": "2.0.0", "rows": [{"position_index": 2, "name": "Suggested for You", "source_app": "Prime Video", "visible_items": 6, "total_items": 20, "scrollable": true, "items": [{"position_index": 0, "destination_app": "Prime Video", "platform_content_id": "B0C45X789", "title": "The Boys", "item_type": "series", "deeplink_url": "primevideo://detail/B0C45X789", "images": [{"kind": "landscape", "url": "https://images-na.ssl-images-amazon.com/theboys.jpg", "width": 1920, "height": 1080}], "offers": [{"offer_type": "included", "currency": "USD", "amount": null, "seller": "Prime Video"}], "cast": [{"person_name": "Karl Urban", "role": "actor"}, {"person_name": "Jack Quaid", "role": "actor"}]}, {"position_index": 1, "destination_app": "Prime Video", "platform_content_id": "B0D12Y456", "title": "Reacher", "item_type": "series", "deeplink_url": "primevideo://detail/B0D12Y456", "images": [{"kind": "landscape", "url": "https://images-na.ssl-images-amazon.com/reacher.jpg", "width": 1920, "height": 1080}], "offers": [{"offer_type": "included", "currency": "USD", "amount": null, "seller": "Prime Video"}], "cast": [{"person_name": "Alan Ritchson", "role": "actor"}]}, {"position_index": 2, "destination_app": "Prime Video", "platform_content_id": "B0E99Z321", "title": "The Lord of the Rings: The Rings of Power", "item_type": "series", "deeplink_url": "primevideo://detail/B0E99Z321", "images": [{"kind": "landscape", "url": "https://images-na.ssl-images-amazon.com/rings_of_power.jpg", "width": 1920, "height": 1080}], "offers": [{"offer_type": "included", "currency": "USD", "amount": null, "seller": "Prime Video"}], "cast": [{"person_name": "Morfydd Clark", "role": "actor"}, {"person_name": "Robert Aramayo", "role": "actor"}]}]}]}
+```
