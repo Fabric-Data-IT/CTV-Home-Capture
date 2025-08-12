@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: CTV Home Capture Schema
+  version: "1.0.0"
+  description: >
+    Data schema to capture the Home screen information of CTVs such as Samsung TV+, Chromecast Google TV, webOS, Fire TV, etc.
+    Includes rows (carousels) and their items, with content metadata, images, pricing, and cast.
+components:
+  schemas:
+    Capture:
+      type: object
+      properties:
+        capture_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the Home capture.
+        platform:
+          type: string
+          enum: [samsung_tizen, webos, fire_tv, android_tv, chromecast_google_tv]
+          description: CTV platform from which the capture was taken.
+        system_version:
+          type: string
+          description: Operating system version of the CTV.
+        device_model:
+          type: string
+          description: Model of the CTV device.
+        locale:
+          type: string
+          description: Locale and language setting (e.g., es-AR).
+        region:
+          type: string
+          description: Country/region code (e.g., AR).
+        collected_at_utc:
+          type: string
+          format: date-time
+          description: Capture timestamp in UTC.
+        crawler_version:
+          type: string
+          description: Version of the scraper/crawler used to capture data.
+        rows:
+          type: array
+          description: List of carousels or rows in the Home screen.
+          items:
+            $ref: "#/components/schemas/Row"
+      required:
+        - capture_id
+        - platform
+        - collected_at_utc
+        - rows
+
+    Row:
+      type: object
+      properties:
+        position_index:
+          type: integer
+          description: Position of the carousel in the Home screen (0-based).
+        name:
+          type: string
+          description: Name of the carousel.
+        source_app:
+          type: string
+          description: App that owns the carousel (if applicable).
+        visible_items:
+          type: integer
+          description: Number of visible items without scrolling.
+        total_items:
+          type: integer
+          description: Total number of items if it can be estimated.
+        scrollable:
+          type: boolean
+          description: Whether the carousel is horizontally scrollable.
+        items:
+          type: array
+          description: List of items or tiles in the carousel.
+          items:
+            $ref: "#/components/schemas/Item"
+      required:
+        - position_index
+        - items
+
+    Item:
+      type: object
+      properties:
+        position_index:
+          type: integer
+          description: Position of the item within the row (0-based).
+        destination_app:
+          type: string
+          description: App the item opens when clicked.
+        platform_content_id:
+          type: string
+          description: Platform-specific content ID if available.
+        title:
+          type: string
+          description: Title of the content.
+        item_type:
+          type: string
+          enum: [movie, series, season, episode, channel, app, other]
+          description: Type of content.
+        deeplink_url:
+          type: string
+          format: uri
+          description: Deep link or intent to open the content directly.
+        images:
+          type: array
+          description: List of images associated with the item.
+          items:
+            $ref: "#/components/schemas/Image"
+        offers:
+          type: array
+          description: List of offers or prices associated with the item.
+          items:
+            $ref: "#/components/schemas/Offer"
+        cast:
+          type: array
+          description: List of cast members if available.
+          items:
+            $ref: "#/components/schemas/CastMember"
+      required:
+        - position_index
+
+    Image:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum: [poster, landscape, square, logo, background, unknown]
+          description: Type of image.
+        url:
+          type: string
+          format: uri
+          description: Image URL.
+        width:
+          type: integer
+          description: Image width in pixels.
+        height:
+          type: integer
+          description: Image height in pixels.
+
+    Offer:
+      type: object
+      properties:
+        offer_type:
+          type: string
+          enum: [rent, buy, subscribe, included, ad_supported, free, other]
+          description: Type of offer.
+        currency:
+          type: string
+          description: Currency code (e.g., ARS).
+        amount:
+          type: number
+          format: float
+          description: Price amount.
+        seller:
+          type: string
+          description: Seller or content provider.
+
+    CastMember:
+      type: object
+      properties:
+        person_name:
+          type: string
+          description: Name of the person.
+        role:
+          type: string
+          description: Role (actor, director, voice, etc.).
+        character_name:
+          type: string
+          description: Character name (if applicable).
